@@ -6,13 +6,14 @@ public class Bank
 
     public readonly HashSet<Account> _accounts = [];
 
-    public readonly HashSet<Transaction> Transactions = [];
+    public readonly HashSet<Transaction> _transactions = [];
 
     public void AddAccount(string name)
     {
         var newAccount = new Account 
         {
             AccountHolder = name,
+            Bank = this,
         };
         _accounts.Add(newAccount);
     }
@@ -25,4 +26,37 @@ public class Bank
             Console.WriteLine(account.AccountHolder);
         }
     }
+
+    public Account FindAccount(string name){
+        var accountToFind = new Account
+        {
+            AccountHolder = name,
+            Bank = this,
+        };
+        var existingCustomer = _accounts.First(a => a.Equals(accountToFind));
+        return accountToFind;
+    }
+
+    public void AddTransaction(decimal amount, string narrative, string from, string to, string date)
+    {
+        var newTransaction = new Transaction
+        {
+            Amount = amount,
+            Narrative = narrative,
+            From = FindAccount(from),
+            To = FindAccount(to),
+            Date = date
+        };
+    _transactions.Add(newTransaction);
+    }
+
+    public void GetTransactions()
+    {
+        Console.WriteLine($"Here is a list of all the transactions at: ${BankName}:");
+        foreach (Transaction t in _transactions)
+        {
+            Console.WriteLine($"{t.From.AccountHolder} gave {t.To.AccountHolder} {t.Amount} for {t.Narrative} on {t.Date}");
+        }
+    }
+    
 }
