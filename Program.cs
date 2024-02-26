@@ -1,21 +1,16 @@
 ﻿using SupportBank.BankManagement;
 
-var myTransactions = new List<string>();
-
-string fileName = "";
-try
+var myBank = new Bank
 {
-    var reader = new StreamReader(fileName);
-    // Console.WriteLine("Here is the content of your file:");
-    // Console.WriteLine(reader.ReadToEnd().Trim());
-    string line; 
+    BankName = "myBank"
+};
 
-    while ((line = reader.ReadLine().Trim()) != null)
-    {
-        myTransactions.Add(line);
-    }
-}
-catch (FileNotFoundException)
+var menu = new UserInterface
 {
-    Console.WriteLine("Sorry, that file was not found.");
-}
+    Bank = myBank
+};
+
+menu.ReadFile();
+
+myBank.GetAccounts();
+myBank.GetTransactions();
