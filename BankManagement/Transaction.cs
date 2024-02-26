@@ -2,12 +2,13 @@ namespace SupportBank.BankManagement;
 
 public class Transaction
 {
-    public int Amount {get; init;}
-    public string Narrative {get; init;} = string.Empty;
+    public required decimal Amount {get; init;}
 
-    public Account From {get; init;}
+    public required string Narrative {get; init;} = string.Empty;
 
-    public Account To {get; init;}
+    public required Account From {get; init;}
 
-    public string Date {get; init;}
+    public  required Account To {get; init;}
+
+    public required string Date {get; init;}
 }
