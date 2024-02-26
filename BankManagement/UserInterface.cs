@@ -1,12 +1,50 @@
-using System.Collections.ObjectModel;
-
 namespace SupportBank.BankManagement;
 
 public class UserInterface
 {
     public Bank Bank {get; init;}
+    public void Run()
+    {
+    ReadFile();
+    DisplayMenu();
+    }
 
-    public void ReadFile(){
+    public void DisplayMenu()
+    {
+    Console.WriteLine($"Welcome to {Bank.BankName}!");
+    bool isFinished;
+    do
+    {
+        Console.WriteLine("Please select an option from the list below: \n 1. See all transactions\n 2. See how much each person owes\n 3. Find transactions for particular person\n 4. Exit programme");
+        var input = Console.ReadLine() ?? "";
+            switch (input)
+            {
+                case "1":
+                    Bank.GetTransactions();
+                    break;
+                case "2":
+                    Bank.GetAllTransactionsBySum();
+                    break;
+                case "3":
+                    Console.WriteLine("Enter the name of the account holder");
+                    string name = Console.ReadLine() ?? "";
+                    Bank.GetTransactionsByName(name);
+                    break;
+                case "4":
+                    isFinished = true;
+                    break;
+                default:
+                    Console.WriteLine("The option you selected is not valid");       
+                    break;
+            }
+            Console.WriteLine("Do you want to see the menu again? \n 1. Yes \n 2. No");
+            input = Console.ReadLine() ?? "";
+            isFinished = input == "2";
+        }while(!isFinished);
+    } 
+
+    public void ReadFile()
+    {
         string fileName = GetFileName();
         ReadAccounts(fileName);
         ReadTransactions(fileName);
