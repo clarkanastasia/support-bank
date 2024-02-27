@@ -1,14 +1,21 @@
+using Microsoft.Extensions.Logging;
+
 namespace SupportBank.BankManagement;
-using NLog;
 
 public class UserInterface
 {
-    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    private readonly ILogger<UserInterface> _logger;
+
+    public UserInterface(ILogger<UserInterface> logger)
+    {
+        _logger = logger;
+    }
+
 
     public Bank Bank {get; init;}
     public void Run()
     {
-    Logger.Info("App has started running");
+    _logger.LogInformation("App has started running");
     ReadFile();
     DisplayMenu();
     }
@@ -16,7 +23,7 @@ public class UserInterface
     public void DisplayMenu()
     {
     Console.WriteLine($"Welcome to {Bank.BankName}!");
-    Logger.Info("User has started using the menu");
+    _logger.LogInformation("User has started using the menu");
     bool isFinished;
     do
     {
@@ -45,7 +52,7 @@ public class UserInterface
             input = Console.ReadLine() ?? "";
             isFinished = input == "2";
         } while(!isFinished);
-    Logger.Info("User has finished using the menu");    
+    _logger.LogInformation("User has finished using the menu");    
     } 
 
     public void ReadFile()
@@ -56,13 +63,13 @@ public class UserInterface
         Console.WriteLine("Finished reading file");
     }
 
-    public static string GetFileName()
+    public string GetFileName()
     {
         // Console.WriteLine("Please enter the file you would like to read");
         // var fileName = Console.ReadLine() ?? "";
         // string fileName = "Transactions2014.csv";
         string fileName = "DodgyTransactions2015.csv";
-        Logger.Info($"The selected file is {fileName}");
+        _logger.LogInformation($"The selected file is {fileName}");
 
         return fileName;
     } 
@@ -84,12 +91,12 @@ public class UserInterface
                     Bank.AddAccount(parts[1]);
                     Bank.AddAccount(parts[2]);
             }
-        Logger.Info("Finished getting account names from file");    
+        _logger.LogInformation("Finished getting account names from file");    
         reader.Close();    
         }
         catch (Exception ex)
         {
-            Logger.Warn($"Failed to create Account instance: {ex.Message}");
+            _logger.LogError($"Failed to create Account instance: {ex.Message}");
         }
     }
 
@@ -121,16 +128,16 @@ public class UserInterface
                     amount = Convert.ToDecimal(parts[4]);
                         } 
                     catch (Exception ex ){
-                    Logger.Warn($"Failed to convert to decimal: {ex.Message}");
+                    _logger.LogWarning($"Failed to convert to decimal: {ex.Message}");
                     }
                     Bank.AddTransaction(amount, narrative, from, to, date);
             }
-        Logger.Info("Finished getting transaction info from file");    
+        _logger.LogInformation("Finished getting transaction info from file");    
         reader.Close();    
         }
         catch (Exception ex)
         {
-            Logger.Error($"Failed to create Transaction instance: {ex.Message}");
+            _logger.LogError($"Failed to create Transaction instance: {ex.Message}");
         }
     }
 }
