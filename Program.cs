@@ -1,22 +1,22 @@
 ﻿using SupportBank.BankManagement;
-using NLog;
-using NLog.Config;
-using NLog.Targets;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
 
-var config = new LoggingConfiguration();
-var target = new FileTarget { FileName = "${currentdir}/logfile.txt", Layout = @"${longdate} ${level} - ${logger}: ${message}" };
-config.AddTarget("File Logger", target);
-config.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, target));
-LogManager.Configuration = config;
+var servicesProvider = new ServiceCollection()
+    .AddTransient<UserInterface>()
+    .AddLogging(loggingBuilder =>
+    {
+        loggingBuilder.ClearProviders();
+        loggingBuilder.AddNLog();
+    })
+    .BuildServiceProvider();
 
 var myBank = new Bank
 {
     BankName = "Support Bank"
 };
 
-var menu = new UserInterface
-{
-    Bank = myBank
-};
+var menu = servicesProvider.GetRequiredService<UserInterface>();
 
 menu.Run();
