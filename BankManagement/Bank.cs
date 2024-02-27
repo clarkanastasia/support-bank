@@ -38,7 +38,7 @@ public class Bank
         return accountToFind;
     }
 
-    public void AddTransaction(decimal amount, string narrative, string from, string to, string date)
+    public void AddTransaction(decimal amount, string narrative, string from, string to, DateTime date)
     {
         var newTransaction = new Transaction
         {
@@ -56,7 +56,7 @@ public class Bank
         Console.WriteLine($"Here is a list of all the transactions at {BankName}:");
         foreach (Transaction t in _transactions)
         {
-            Console.WriteLine($"{t.From.AccountHolder} gave {t.To.AccountHolder} {t.Amount} for {t.Narrative} on {t.Date}");
+            Console.WriteLine($"{t.From.AccountHolder} gave {t.To.AccountHolder} {t.Amount} for {t.Narrative} on {t.Date:dd/MM/yyyy}");
         }
     }
 
@@ -66,7 +66,7 @@ public class Bank
         Console.WriteLine($"Here are all the transactions involving {name}: ");
         foreach (Transaction t in query)
         {
-            Console.WriteLine($"{t.Amount} to {t.To.AccountHolder} for {t.Narrative} on {t.Date}");
+            Console.WriteLine($"{t.Amount} to {t.To.AccountHolder} for {t.Narrative} on {t.Date:dd/MM/yyyy}");
         }   
     }
     public void GetAllTransactionsBySum()
