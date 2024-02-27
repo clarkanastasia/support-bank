@@ -5,14 +5,12 @@ namespace SupportBank.BankManagement;
 public class UserInterface
 {
     private readonly ILogger<UserInterface> _logger;
+    public Bank? Bank {get; set;} 
 
     public UserInterface(ILogger<UserInterface> logger)
     {
         _logger = logger;
     }
-
-
-    public Bank Bank {get; init;}
     public void Run()
     {
     _logger.LogInformation("App has started running");
@@ -22,6 +20,11 @@ public class UserInterface
 
     public void DisplayMenu()
     {
+    if(Bank == null)
+    {
+        Console.WriteLine("No bank");
+        return;
+    }    
     Console.WriteLine($"Welcome to {Bank.BankName}!");
     _logger.LogInformation("User has started using the menu");
     bool isFinished;
@@ -69,20 +72,26 @@ public class UserInterface
         // var fileName = Console.ReadLine() ?? "";
         // string fileName = "Transactions2014.csv";
         string fileName = "DodgyTransactions2015.csv";
-        _logger.LogInformation($"The selected file is {fileName}");
+        _logger.LogInformation("The selected file is {fileName}", fileName);
 
         return fileName;
     } 
 
     public void ReadAccounts(string fileName)
     {
+        if(Bank == null)
+    {
+        Console.WriteLine("No bank");
+        return;
+    }  
         bool isFirstLine = true;
         try
         {
             var reader = new StreamReader(fileName);
-            string line; 
+            string? line; 
             while ((line = reader.ReadLine()) != null)
             {
+                
                 if (isFirstLine){
                     isFirstLine = false;
                     continue;
@@ -94,19 +103,24 @@ public class UserInterface
         _logger.LogInformation("Finished getting account names from file");    
         reader.Close();    
         }
-        catch (Exception ex)
+        catch (FileNotFoundException ex)
         {
-            _logger.LogError($"Failed to create Account instance: {ex.Message}");
+            _logger.LogError("Couldn't find required file: {ex.Message}", ex.Message);
         }
     }
 
     public void ReadTransactions(string fileName)
     {
+    if(Bank == null)
+    {
+        Console.WriteLine("No bank");
+        return;
+    }  
         bool isFirstLine = true;
         try
         {
             var reader = new StreamReader(fileName);
-            string line; 
+            string? line; 
             while ((line = reader.ReadLine()) != null)
             {
                 if (isFirstLine)
@@ -127,17 +141,17 @@ public class UserInterface
                     try {
                     amount = Convert.ToDecimal(parts[4]);
                         } 
-                    catch (Exception ex ){
-                    _logger.LogWarning($"Failed to convert to decimal: {ex.Message}");
+                    catch (FormatException ex ){
+                    _logger.LogWarning("Failed to convert to decimal: {ex.Message}", ex.Message);
                     }
                     Bank.AddTransaction(amount, narrative, from, to, date);
             }
         _logger.LogInformation("Finished getting transaction info from file");    
         reader.Close();    
         }
-        catch (Exception ex)
+        catch (FileNotFoundException ex)
         {
-            _logger.LogError($"Failed to create Transaction instance: {ex.Message}");
+            _logger.LogError("Couldn't find rrequired file: {ex.Message}", ex.Message);
         }
     }
 }

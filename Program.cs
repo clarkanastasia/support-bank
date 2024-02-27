@@ -19,4 +19,6 @@ var myBank = new Bank
 
 var menu = servicesProvider.GetRequiredService<UserInterface>();
 
+menu.Bank = myBank;
+
 menu.Run();
