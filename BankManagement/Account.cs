@@ -6,7 +6,7 @@ public class Account
     
     public required Bank Bank {get; init;}
     
-    public override bool Equals(object? obj)
+    public override bool Equals(object obj)
     {
         return obj is Account account && account.AccountHolder == AccountHolder;
     }
