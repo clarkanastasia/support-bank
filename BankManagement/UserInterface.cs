@@ -35,12 +35,15 @@ public class UserInterface
             switch (input)
             {
                 case "1":
+                    _logger.LogInformation("User selected option 1");
                     Bank.GetTransactions();
                     break;
                 case "2":
+                    _logger.LogInformation("User selected option 2");
                     Bank.GetAllTransactionsBySum();
                     break;
                 case "3":
+                    _logger.LogInformation("User selected option 3");
                     Console.WriteLine("Enter the name of the account holder");
                     string name = Console.ReadLine() ?? "";
                     Bank.GetTransactionsByName(name);
@@ -68,10 +71,10 @@ public class UserInterface
 
     public string GetFileName()
     {
-        // Console.WriteLine("Please enter the file you would like to read");
-        // var fileName = Console.ReadLine() ?? "";
+        Console.WriteLine("Please enter the file you would like to read");
+        var fileName = Console.ReadLine() ?? "";
         // string fileName = "Transactions2014.csv";
-        string fileName = "DodgyTransactions2015.csv";
+        // string fileName = "DodgyTransactions2015.csv";
         _logger.LogInformation("The selected file is {fileName}", fileName);
 
         return fileName;
@@ -80,10 +83,10 @@ public class UserInterface
     public void ReadAccounts(string fileName)
     {
         if(Bank == null)
-    {
-        Console.WriteLine("No bank");
-        return;
-    }  
+        {
+            Console.WriteLine("No bank");
+            return;
+        }  
         bool isFirstLine = true;
         try
         {
@@ -92,7 +95,8 @@ public class UserInterface
             while ((line = reader.ReadLine()) != null)
             {
                 
-                if (isFirstLine){
+                if (isFirstLine)
+                {
                     isFirstLine = false;
                     continue;
                 }
@@ -140,8 +144,9 @@ public class UserInterface
                     decimal amount = 0;
                     try {
                     amount = Convert.ToDecimal(parts[4]);
-                        } 
-                    catch (FormatException ex ){
+                    } 
+                    catch (FormatException ex )
+                    {
                     _logger.LogWarning("Failed to convert to decimal: {ex.Message}", ex.Message);
                     }
                     Bank.AddTransaction(amount, narrative, from, to, date);
