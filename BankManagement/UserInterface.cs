@@ -60,7 +60,6 @@ public class UserInterface
         } while(!isFinished);
     _logger.LogInformation("User has finished using the menu");    
     } 
-
     public void ReadFile()
     {
         string fileName = GetFileName();
@@ -73,8 +72,6 @@ public class UserInterface
     {
         Console.WriteLine("Please enter the file you would like to read");
         var fileName = Console.ReadLine() ?? "";
-        // string fileName = "Transactions2014.csv";
-        // string fileName = "DodgyTransactions2015.csv";
         _logger.LogInformation("The selected file is {fileName}", fileName);
 
         return fileName;
@@ -112,7 +109,6 @@ public class UserInterface
             _logger.LogError("Couldn't find required file: {ex.Message}", ex.Message);
         }
     }
-
     public void ReadTransactions(string fileName)
     {
     if(Bank == null)

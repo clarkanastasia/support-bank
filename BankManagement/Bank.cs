@@ -3,9 +3,7 @@ namespace SupportBank.BankManagement;
 public class Bank
 {
     public string BankName {get; init;} = string.Empty;
-
     public readonly HashSet<Account> _accounts = [];
-
     public readonly HashSet<Transaction> _transactions = [];
 
     public void AddAccount(string name)

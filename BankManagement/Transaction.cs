@@ -3,9 +3,7 @@ namespace SupportBank.BankManagement;
 public class Transaction
 {   
     private decimal _amount;
-
     public required string Narrative {get; init;} = string.Empty;
-
     public required Account From {get; init;}
     public required Account To {get; init;}
     public required DateTime Date {get; set;}
